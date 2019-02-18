@@ -22,7 +22,82 @@ GET <nom de votre index>/_count
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
 ```
-TODO : ajouter les requêtes ElasticSearch ici
+GET 911/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "500m",
+          "location": {
+            "lat": 40.241493,
+            "lon": -75.283783
+          }
+        }
+      }
+    }
+  }
+}
+
+GET 911/_search
+{
+  "size": 0,
+  "aggs" : {
+    "callCategories" : {
+      "filters" : {
+        "filters" : {
+          "EMS" :   { "match" : { "title" : "EMS:"   }},
+          "Fire" : { "match" : { "title" : "Fire:" }},
+          "Traffic" : { "match" : { "title" : "Traffic:" }}
+        }
+      }
+    }
+  }
+}
+
+GET 911/_search
+{
+  "size": 0,
+  "aggs": {
+    "by_month": {
+      "date_histogram": {
+        "field": "@timestamp",
+        "interval": "month"
+      },
+      "aggs": {
+        "month_bucket_sort": {
+          "bucket_sort": {
+            "sort": {"_count": "desc"},
+            "size": 3
+          }
+        }
+      }
+    }
+  }
+}
+
+GET 911/_search
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": {
+        "match": {"title": "OVERDOSE"}
+      }
+    }
+  },
+  "aggs" : {
+    "city" : {
+      "terms" : { 
+        "field" : "twp.keyword",
+        "size" : 3
+      }
+    }
+  }
+}
 ```
 
 ## Kibana
