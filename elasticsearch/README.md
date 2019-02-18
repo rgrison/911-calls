@@ -49,8 +49,8 @@ GET 911/_search
     "callCategories" : {
       "filters" : {
         "filters" : {
-          "EMS" :   { "match" : { "title" : "EMS:"   }},
-          "Fire" : { "match" : { "title" : "Fire:" }},
+          "EMS"     : { "match" : { "title" : "EMS:"     }},
+          "Fire"    : { "match" : { "title" : "Fire:"    }},
           "Traffic" : { "match" : { "title" : "Traffic:" }}
         }
       }
@@ -109,6 +109,10 @@ Dans Kibana, créez un dashboard qui permet de visualiser :
 * Un Pie chart réparti par bimestre, par catégories et par canton (township)
 
 Pour nous permettre d'évaluer votre travail, ajoutez une capture d'écran du dashboard dans ce répertoire [images](images).
+
+Capture d'écran de notre dashboard :
+
+![tableau de bord](./images/tableau-de-bord.png)
 
 ### Timelion
 Timelion est un outil de visualisation des timeseries accessible via Kibana à l'aide du bouton : ![](images/timelion.png)
