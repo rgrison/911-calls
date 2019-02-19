@@ -21,6 +21,8 @@ GET <nom de votre index>/_count
 
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
+### Compter le nombre d'appels autour de Lansdale dans un rayon de 500 mètres
+
 ```
 GET 911/_search
 {
@@ -41,7 +43,11 @@ GET 911/_search
     }
   }
 }
+```
 
+### Compter le nombre d'appels par catégorie
+
+```
 GET 911/_search
 {
   "size": 0,
@@ -57,7 +63,11 @@ GET 911/_search
     }
   }
 }
+```
 
+### Trouver les 3 mois ayant comptabilisés le plus d'appels
+
+```
 GET 911/_search
 {
   "size": 0,
@@ -78,7 +88,11 @@ GET 911/_search
     }
   }
 }
+```
 
+### Trouver le top 3 des villes avec le plus d'appels pour overdose
+
+```
 GET 911/_search
 {
   "size": 0,
@@ -124,4 +138,8 @@ Envoyer la réponse sous la forme de la requête Timelion ci-dessous:
 
 ```
 TODO : ajouter la requête Timelion ici
+
+.es('title:Fire AND @timestamp: [2016-07-08 TO 2017-01-08]').cusum().label("Last 6 months of 'Fire' calls"),
+.es('title:Fire AND @timestamp: [2016-01-08 TO 2016-07-07]', offset=-6M).cusum().label("Previous 6 months of 'Fire' calls"),
+.static(6200).label(Objective).lines(fill=1)
 ```
