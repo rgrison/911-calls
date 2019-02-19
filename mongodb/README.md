@@ -44,6 +44,15 @@ db.calls.find({
     } 
   } 
 }).count()
+
+db.calls.aggregate([
+  { 
+    $group: { 
+      _id: { $arrayElemAt: [ { $split: ["$title", ":"] }, 0] }, 
+      count: { $sum: 1 } 
+    } 
+  } 
+]);
 ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
