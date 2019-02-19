@@ -5,26 +5,37 @@ var fs = require('fs');
 var MongoClient = mongodb.MongoClient;
 var mongoUrl = 'mongodb://localhost:27017/911-calls';
 
-var insertCalls = function(db, callback) {
-    var collection = db.collection('calls');
+var insertCalls = function (db, callback) {
+  var collection = db.collection('calls');
 
-    var calls = [];
-    fs.createReadStream('../911.csv')
-        .pipe(csv())
-        .on('data', data => {
-            var call = {}; // TODO créer l'objet call à partir de la ligne
-            calls.push(call);
-        })
-        .on('end', () => {
-          collection.insertMany(calls, (err, result) => {
-            callback(result)
-          });
-        });
+  var calls = [];
+  fs.createReadStream('../911.csv')
+    .pipe(csv())
+    .on('data', data => {
+      var call = {
+        "location": {
+          "type": "Point",
+          "coordinates": [parseFloat(data.lng), parseFloat(data.lat)]
+        },
+        "desc": data.desc,
+        "zip": parseInt(data.zip),
+        "title": data.title,
+        "@timestamp": new Date(data.timeStamp),
+        "twp": data.twp,
+        "addr": data.addr
+      };
+      calls.push(call);
+    })
+    .on('end', () => {
+      collection.insertMany(calls, (err, result) => {
+        callback(result)
+      });
+    });
 }
 
 MongoClient.connect(mongoUrl, (err, db) => {
-    insertCalls(db, result => {
-        console.log(`${result.insertedCount} calls inserted`);
-        db.close();
-    });
+  insertCalls(db, result => {
+    console.log(`${result.insertedCount} calls inserted`);
+    db.close();
+  });
 });

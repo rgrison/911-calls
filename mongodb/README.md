@@ -27,12 +27,23 @@ Afin de répondre aux différents problèmes, vous allez avoir besoin de créer 
 * Un index textuel sur le titre des appels pour pouvoir faire des recherches full-text sur ce champ (recherche des overdoses par exemple)
   * https://docs.mongodb.com/manual/core/index-text/#create-text-index
 
+```js
+db.calls.createIndex({location: "2dsphere"});
+```
+
 ## Requêtes
 
 À vous de jouer ! Écrivez les requêtes MongoDB permettant de résoudre les problèmes posés.
 
-```
-TODO : ajouter les requêtes MongoDB ici
+```js
+db.calls.find({ 
+  location: { 
+    $near: { 
+      $geometry: { type: "Point",  coordinates: [-75.283783, 40.241493]}, 
+      $maxDistance: 500 
+    } 
+  } 
+}).count()
 ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
