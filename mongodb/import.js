@@ -20,7 +20,7 @@ var insertCalls = function (db, callback) {
         "desc": data.desc,
         "zip": parseInt(data.zip),
         "title": data.title,
-        "@timestamp": new Date(data.timeStamp),
+        "timestamp": new Date(data.timeStamp),
         "twp": data.twp,
         "addr": data.addr
       };

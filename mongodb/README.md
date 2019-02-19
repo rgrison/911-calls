@@ -36,6 +36,7 @@ db.calls.createIndex({location: "2dsphere"});
 À vous de jouer ! Écrivez les requêtes MongoDB permettant de résoudre les problèmes posés.
 
 ```js
+// Compter le nombre d'appels autour de Lansdale dans un rayon de 500 mètres
 db.calls.find({ 
   location: { 
     $near: { 
@@ -45,6 +46,8 @@ db.calls.find({
   } 
 }).count()
 
+
+// Compter le nombre d'appels par catégorie
 db.calls.aggregate([
   { 
     $group: { 
@@ -53,6 +56,41 @@ db.calls.aggregate([
     } 
   } 
 ]);
+
+// Trouver les 3 mois ayant comptabilisés le plus d'appels
+db.calls.aggregate([
+	{ 
+		$group: {
+			_id : {month: {$month: "$timestamp"}, year: {$year: "$timestamp"}},
+			count: {$sum: 1}
+		}
+	},
+	{
+		$sort: {count: -1}
+	},
+	{
+		$limit: 3
+	}
+])
+
+// Trouver le top 3 des villes avec le plus d'appels pour overdose
+db.calls.aggregate([
+	{
+		$match: {"title": "EMS: OVERDOSE"}
+	},
+	{ 
+		$group: {
+			_id : "$twp",
+			count: {$sum: 1}
+		}
+	},
+	{
+		$sort: {count: -1}
+	},
+	{
+		$limit: 3
+	}
+])
 ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
