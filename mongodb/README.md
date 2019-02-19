@@ -29,6 +29,7 @@ Afin de répondre aux différents problèmes, vous allez avoir besoin de créer 
 
 ```js
 db.calls.createIndex({location: "2dsphere"});
+db.calls.createIndex({title: "text"})
 ```
 
 ## Requêtes
