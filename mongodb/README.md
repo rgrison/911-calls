@@ -60,37 +60,37 @@ db.calls.aggregate([
 
 // Trouver les 3 mois ayant comptabilisés le plus d'appels
 db.calls.aggregate([
-	{ 
-		$group: {
-			_id : {month: {$month: "$timestamp"}, year: {$year: "$timestamp"}},
-			count: {$sum: 1}
-		}
-	},
-	{
-		$sort: {count: -1}
-	},
-	{
-		$limit: 3
-	}
+  { 
+    $group: {
+      _id : {month: {$month: "$timestamp"}, year: {$year: "$timestamp"}},
+      count: {$sum: 1}
+    }
+  },
+  {
+    $sort: {count: -1}
+  },
+  {
+    $limit: 3
+  }
 ])
 
 // Trouver le top 3 des villes avec le plus d'appels pour overdose
 db.calls.aggregate([
-	{
-		$match: {"title": "EMS: OVERDOSE"}
-	},
-	{ 
-		$group: {
-			_id : "$twp",
-			count: {$sum: 1}
-		}
-	},
-	{
-		$sort: {count: -1}
-	},
-	{
-		$limit: 3
-	}
+  {
+    $match: {"title": "EMS: OVERDOSE"}
+  },
+  { 
+    $group: {
+      _id : "$twp",
+      count: {$sum: 1}
+    }
+  },
+  {
+    $sort: {count: -1}
+  },
+  {
+    $limit: 3
+  }
 ])
 ```
 
